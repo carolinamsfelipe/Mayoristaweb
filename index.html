@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mayorista a tu Casa</title>
+<meta name="description" content="Elegí un combo o armá el tuyo con productos de almacén, limpieza y cuidado personal. Pedidos desde $200.000 por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<!--CUERPO-->
+<div class="topbar">
+  <div class="wrap">
+    <span id="topbar-info"></span>
+    <button type="button" class="topbar-arr" data-act="arrepentimiento">Botón de arrepentimiento</button>
+  </div>
+</div>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Mayorista a tu Casa, ir al inicio"><svg role="img" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 12 516 136" width="516" height="136">
+<g transform="translate(8 10) scale(1.05)">
+  <g stroke="#F57C1F" stroke-width="7" stroke-linecap="round" opacity="0.9">
+    <line x1="6" y1="66" x2="24" y2="66"/><line x1="0" y1="80" x2="24" y2="80"/><line x1="10" y1="94" x2="24" y2="94"/>
+  </g>
+  <path d="M36 60 L74 26 L112 60 L112 102 Q112 110 104 110 L44 110 Q36 110 36 102 Z" fill="#F57C1F" stroke="#F57C1F" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M28 64 L74 22 L120 64" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M60 70 L88 70 L91 100 Q91 104 87 104 L61 104 Q57 104 57 100 Z" fill="#FFFFFF"/>
+  <path d="M66 72 L66 66 Q66 58 74 58 Q82 58 82 66 L82 72" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M66 86 L72 92 L83 80" fill="none" stroke="#F57C1F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</g><text x="152" y="52" font-family="Poppins" font-weight="600" font-size="27" letter-spacing="8" fill="currentColor">MAYORISTA</text>
+<text x="150" y="110" font-family="Poppins" font-weight="800" font-size="62" letter-spacing="-1.5" fill="#F57C1F">a tu casa</text><text x="152" y="140" font-family="Poppins" font-weight="500" font-size="14" letter-spacing="0.6" fill="currentColor" opacity="0.8">Almacén · Limpieza · Fiambrería, en tu puerta</text></svg></a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#combos">Combos</a>
+      <a href="#armar">Armá tu combo</a>
+      <a href="#como-comprar">Cómo comprar</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="btn btn-dark btn-sm top-cart" type="button" data-act="abrir-carrito" id="top-cart">Tu pedido <span class="badge num" id="top-cart-total">$0</span></button>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Almacén · Limpieza · Cuidado personal</p>
+        <h1 id="hero-title">Tu compra grande, <em>a tu manera.</em></h1>
+        <p class="lead">Elegí un combo o armá el tuyo con productos para tu casa. Pedidos desde $200.000.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#armar" data-act="ir-armar">Armar mi combo</a>
+          <a class="btn btn-ghost" href="#combos">Ver combos sugeridos</a>
+        </div>
+        <ul class="facts" aria-label="Condiciones" id="hero-facts"></ul>
+      </div>
+      <figure class="remito" aria-label="Ejemplo de combo" id="hero-remito"></figure>
+    </div>
+  </section>
+
+  <section class="section" id="combos" aria-labelledby="combos-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Combos sugeridos</p>
+        <h2 id="combos-title">Combos listos para pedir o cambiar</h2>
+        <p class="lead">Cada combo suma exactamente su precio con los productos que ves adentro. Si lo personalizás, el total pasa a ser la suma real de lo que elijas.</p>
+      </div>
+      <div class="combos" id="combo-list"></div>
+    </div>
+  </section>
+
+  <section class="section" id="armar" aria-labelledby="armar-title" style="padding-top:24px">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Catálogo y armador</p>
+        <h2 id="armar-title">Armá tu combo</h2>
+        <p class="lead">Empezá de cero o desde un combo sugerido. Agregá, quitá y cambiá cantidades: el total se actualiza al instante.</p>
+        <div class="start-row">
+          <span class="label">Empezar desde:</span>
+          <label class="visually-hidden" for="start-select">Combo para empezar</label>
+          <select id="start-select"></select>
+          <button class="btn btn-ghost btn-sm" type="button" data-act="cargar-inicio">Cargar</button>
+        </div>
+      </div>
+      <div class="builder">
+        <div class="catalog" id="catalogo">
+          <div class="tools">
+            <div class="search">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <label class="visually-hidden" for="q">Buscar productos</label>
+              <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Buscá por producto o marca: yerba, Ariel, Natura…">
+              <button type="button" class="q-clear" id="q-clear" data-act="clear-q" aria-label="Borrar la búsqueda" hidden>×</button>
+            </div>
+            <div class="chips" id="sec-chips" role="group" aria-label="Rubros"></div>
+            <div class="chips sub" id="cat-chips" role="group" aria-label="Categorías" hidden></div>
+          </div>
+          <div class="list-bar">
+            <span id="result-count" class="num" aria-live="polite"></span>
+            <label class="sort" for="orden"><span>Ordenar</span>
+              <select id="orden">
+                <option value="rubro">Por rubro</option>
+                <option value="precio-asc">Menor precio</option>
+                <option value="precio-desc">Mayor precio</option>
+                <option value="az">A a Z</option>
+              </select></label>
+            <label class="chk" for="solo-pedido"><input type="checkbox" id="solo-pedido"> Ocultar productos a consultar</label>
+          </div>
+          <p class="img-note">Imágenes ilustrativas: muestran el tipo de producto, no la marca ni el envase.</p>
+          <div id="product-list"></div>
+        </div>
+        <aside class="aside-sticky" aria-label="Resumen de tu pedido">
+          <div class="summary" id="summary-aside"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como-comprar" aria-labelledby="como-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Cómo comprar</p>
+        <h2 id="como-title">Tu pedido en cuatro pasos</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Elegís los productos</h3><p>Tomá un combo sugerido, personalizalo o armá tu selección desde cero con el catálogo.</p></li>
+        <li><h3>Revisás tu pedido</h3><p>Controlá cantidades, precios y el total. El pedido mínimo es de $200.000 en mercadería.</p></li>
+        <li><h3>Lo enviás por WhatsApp</h3><p>Completá tu nombre y localidad y tocá “Enviar pedido por WhatsApp”: se abre el chat con tu pedido escrito y solo tocás Enviar. Todavía no pagás nada.</p></li>
+        <li><h3>Coordinamos y te lo llevamos</h3><p>Te respondemos para confirmar stock, día y horario de entrega. Pagás en efectivo al recibir o con Mercado Pago.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="preguntas" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2 id="faq-title">Lo que conviene saber antes de pedir</h2>
+      </div>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <section class="section" id="contacto" aria-labelledby="contacto-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Contacto</p>
+        <h2 id="contacto-title">Hablemos por WhatsApp</h2>
+      </div>
+      <div class="contact" id="contact"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><b>Mayorista a tu Casa</b> · Una iniciativa de AdminYAAA.</p>
+    <p class="foot-links">
+      <button type="button" class="foot-arr" data-act="arrepentimiento">Botón de arrepentimiento</button>
+      <a href="https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario" target="_blank" rel="noopener">Defensa de las y los Consumidores. Para reclamos ingrese aquí</a>
+    </p>
+    <p id="foot-note"></p>
+  </div>
+</footer>
+
+<div class="bottom-bar" role="region" aria-label="Tu pedido">
+  <div class="in">
+    <div class="bb-tot">
+      <strong id="bb-total">$0</strong>
+      <div class="meter" aria-hidden="true"><i id="bb-meter"></i></div>
+      <small id="bb-hint">Te faltan $200.000 para alcanzar el pedido mínimo</small>
+    </div>
+    <button class="btn btn-primary" type="button" data-act="abrir-carrito">Ver pedido <span class="badge-n num" id="bb-n" hidden></span></button>
+  </div>
+</div>
+
+<dialog id="dlg-carrito" class="sheet" aria-labelledby="carrito-title">
+  <div class="dlg">
+    <div class="dlg-head">
+      <div><h3 id="carrito-title">Tu pedido</h3><p>Cambiá cantidades o quitá productos. El total se recalcula solo.</p></div>
+      <button class="x" type="button" data-act="cerrar" aria-label="Cerrar">×</button>
+    </div>
+    <div class="summary" id="summary-sheet" style="border:0;box-shadow:none;border-radius:0"></div>
+  </div>
+</dialog>
+
+<dialog id="dlg-combo" aria-labelledby="combo-dlg-title">
+  <div class="dlg" id="combo-dlg"></div>
+</dialog>
+
+<dialog id="dlg-elegir" aria-labelledby="elegir-title">
+  <div class="dlg">
+    <div class="dlg-head">
+      <div><h3 id="elegir-title">Ya tenés productos en tu pedido</h3><p id="elegir-sub"></p></div>
+      <button class="x" type="button" data-act="cerrar" aria-label="Cerrar">×</button>
+    </div>
+    <div class="dlg-body choice">
+      <button class="btn btn-dark btn-block" type="button" data-act="elegir-reemplazar">Reemplazar mi pedido por este combo</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="elegir-sumar">Sumar el combo a lo que ya elegí</button>
+      <button class="btn-link" type="button" data-act="cerrar">Cancelar</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlg-revisar" aria-labelledby="revisar-title">
+  <div class="dlg" id="revisar"></div>
+</dialog>
+
+<dialog id="dlg-arrep" aria-labelledby="arrep-title">
+  <div class="dlg" id="arrep"></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="visually-hidden" id="sr-live" aria-live="polite"></div>
+<!--FIN-CUERPO-->
+<script src="js/config.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/ajustes.js"></script>
+<script src="js/imagenes.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

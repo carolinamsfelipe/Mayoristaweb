@@ -1,0 +1,94 @@
+MAYORISTA A TU CASA — WEB DE PEDIDOS
+Versión 2 (01/10/2026) · precios al 29/09/2026
+
+CÓMO VERLA
+Abrí index.html con doble clic (Chrome, Edge o Firefox). Necesita las carpetas
+css, js e img al lado. Para publicarla en internet: esta carpeta se sube a un
+repositorio privado de GitHub y se conecta a Cloudflare Pages, que publica sola
+cada cambio (ver README.md). No usar GitHub Pages: sus condiciones no permiten
+tiendas ni sitios de venta.
+
+QUÉ HAY EN CADA ARCHIVO
+- index.html ........ estructura y textos fijos de la página.
+- css/estilos.css ... colores, tipografías y diseño.
+- js/config.js ...... datos comerciales: WhatsApp, zonas, envío, horarios, pagos.
+- js/datos.js ....... catálogo, precios y combos (copia de datos_publicos_web.json).
+- js/ajustes.js ..... nombres corregidos, productos con varias opciones, notas
+                      y el combo "Esenciales para tu casa" ($200.000).
+- js/imagenes.js .... qué imagen lleva cada producto y fotos propias.
+- js/app.js ......... funcionamiento (armador, carrito, mensaje de WhatsApp).
+- img/logo.png ...... logo original.
+- img/productos/ .... 86 ilustraciones por tipo de producto (+ LICENCIA.txt).
+
+1) ACTUALIZAR PRECIOS, PRODUCTOS O COMBOS
+Abrí js/datos.js con el Bloc de notas. Borrá todo lo que está después de
+"window.CATALOGO =" y pegá el contenido completo del nuevo datos_publicos_web.json,
+terminando con punto y coma (;). Guardá y recargá la página.
+- Los precios se muestran tal cual vienen: la web NO suma 10% ni redondea.
+- La fecha "Precios al ..." sale del mismo archivo.
+- Los combos se arman con los productos y cantidades del archivo; la web
+  muestra la suma real, así que si cambian precios, el combo cambia su total.
+  Revisá que cada combo siga cerrando en su monto antes de publicar.
+- Los nombres al público y el combo de $200.000 están en js/ajustes.js y se
+  aplican por código de producto. Si reemplazás datos.js, siguen funcionando.
+  Si cambian precios, el combo de $200.000 deja de dar justo: hay que ajustar
+  sus cantidades en ajustes.js (combosExtra).
+
+1b) NOMBRES DE PRODUCTOS (js/ajustes.js)
+- nombres: código -> nombre al público. Orden: tipo + marca + variedad +
+  presentación. No cambia precios, códigos ni cantidades.
+- opciones: códigos de productos con varios sabores, tipos o marcas al mismo
+  precio. La web muestra "Varias opciones" y le pide al cliente que lo aclare
+  en Observaciones; si no, se define al confirmar.
+- notas: aclaración visible debajo del producto (por ejemplo, en "B/C").
+- Lo que falta confirmar está en Revision_web_nombres_y_pendientes_2026-10-01.xlsx.
+
+2) WHATSAPP, ENVÍOS Y PAGOS
+Abrí js/config.js y cambiá solo lo que está entre comillas o los números:
+- whatsapp: número con 549 + característica sin 0 + número sin 15.
+  Hoy: "5491130332341" (11 3033-2341). Si lo dejás "", la web ofrece
+  "Copiar pedido" y avisa que falta el número.
+- whatsappVisible: cómo se lee el número en pantalla.
+- zonasEnvio: zonas con costo conocido. Hoy: Ituzaingó con costoEnvio 0 (gratis).
+  Para sumar otra: { zona: "Castelar", costoEnvio: 3000 }
+  La web la reconoce cuando el cliente la escribe en "Localidad o barrio".
+- costoEnvioOtrasZonas: null = "a confirmar" (NO es gratis). Número = costo fijo.
+- horarios: texto libre. Vacío = "A coordinar".
+- mediosDePago: lista. Hoy: ["Efectivo al recibir", "Mercado Pago"].
+  El cliente elige uno al enviar el pedido y va en el mensaje.
+
+3) IMÁGENES DE PRODUCTOS
+Cada producto muestra una ilustración genérica de su tipo (fideos, yerba,
+queso, detergente...). No muestran la marca ni el envase, y la web lo aclara.
+Son de Fluent Emoji de Microsoft, con licencia MIT (ver img/productos/LICENCIA.txt).
+- Cambiar la ilustración de un producto: en js/imagenes.js, dentro de
+  "tipoPorProducto", cambiá el tipo de ese código por otro de la lista "tipos".
+- Poner una foto real: guardala en img/fotos/ (cuadrada, unos 300 x 300 px) y
+  agregala en "fotos", por ejemplo: fotos: { "M72": "img/fotos/playadito.jpg" }
+  Usá fotos propias o que el proveedor te autorice a usar.
+- Productos nuevos: si no los agregás en "tipoPorProducto", muestran el ícono
+  del rubro. Si una ruta de foto está mal escrita, también vuelve al ícono.
+
+4) BOTÓN DE ARREPENTIMIENTO (obligatorio para ventas a distancia)
+Está arriba de todo y al pie de la página. El cliente completa nombre, fecha
+de entrega y qué quiere devolver, y te lo manda por WhatsApp.
+Cuando llegue una solicitud:
+- Respondé dentro de las 24 horas con un código de trámite (por ejemplo
+  ARR-20261001-01) y anotala en el registro administrativo.
+- El plazo del cliente es de 10 días corridos desde que recibió el pedido.
+- El retiro corre por cuenta del vendedor. Consultá con tu contador cómo
+  hacer la devolución del dinero si ya se cobró.
+
+DATOS PENDIENTES
+- Días y horarios de entrega (config.js > horarios). Hoy: "A coordinar".
+- Zonas y costo de envío fuera de Ituzaingó (hoy: "a confirmar").
+- Presentaciones y nombres dudosos (ver la planilla de revisión).
+- Fotos reales de productos (planilla Fotos_productos_a_cargar.xlsx).
+
+IMPORTANTE
+- La web no cobra ni confirma pedidos: arma el mensaje y abre WhatsApp. Abrir
+  WhatsApp no marca el pedido como enviado ni confirmado. El pedido queda
+  confirmado cuando se responde con stock, día y horario de entrega (y costo
+  de envío fuera de Ituzaingó).
+- No muestra stock ni costos internos.
+- El pedido del cliente se guarda solo en su navegador.
