@@ -12,6 +12,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -24,6 +25,16 @@ body {
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+@supports not (overflow-x: clip) {
+  html, body {
+    overflow-x: hidden;
+  }
 }
 
 body.modal-open,
@@ -118,4 +129,41 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-muted {
   color: var(--color-text-muted);
+}
+
+/* ============================================================
+   BARRAS DE DESPLAZAMIENTO VISIBLES (SCROLLBARS)
+   Garantiza que la barra de desplazamiento sea siempre visible en Mac,
+   navegadores WebKit y Chromium (Safari, Chrome, Edge) y Firefox.
+   ============================================================ */
+
+/* Navegadores estándar (Firefox y modernos) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-500) var(--color-bg-surface);
+}
+
+/* Motores WebKit (Chrome, Safari, Edge, Opera en Mac y Windows) */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-500);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-bg-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-600);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--color-accent-700);
 }

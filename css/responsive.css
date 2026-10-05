@@ -12,8 +12,15 @@
   display: none;
 }
 
-/* TABLET Y PANTALLAS MEDIANAS (hasta 1024px) */
-@media (max-width: 1024px) {
+/* PANTALLAS GRANDES Y MEDIANAS (hasta 1400px) */
+@media (max-width: 1400px) {
+  .nav-link--secondary {
+    display: none;
+  }
+}
+
+/* LAPTOPS Y PANTALLAS COMPACTAS (hasta 1240px) */
+@media (max-width: 1240px) {
   .nav-desktop {
     display: none;
   }
@@ -27,6 +34,13 @@
     color: var(--color-primary-800);
   }
 
+  .brand-tagline {
+    display: none;
+  }
+}
+
+/* TABLET Y PANTALLAS MEDIANAS (hasta 1024px) */
+@media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
@@ -77,6 +91,21 @@
 
   .header-search {
     display: none; /* Se abre vía drawer o modal de búsqueda */
+  }
+
+  .brand-texts {
+    display: none; /* El logo img/logo.png ya contiene el texto y nombre */
+  }
+
+  .action-btn--cart span:not(.action-badge) {
+    display: none;
+  }
+
+  .action-btn--cart {
+    padding: 0;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    min-width: var(--touch-target);
   }
 
   .action-btn--fav {
@@ -237,4 +266,33 @@
   body {
     padding-bottom: 60px;
   }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .shipping-zones-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .coupons-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .multi-search-box {
+    padding: 1rem;
+  }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .shipping-zones-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
