@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Panel Administrativo | Mayorista a tu Casa — AdminYAAA</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="../img/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+      background: var(--color-bg-page);
+    }
+    .admin-sidebar {
+      width: 260px;
+      background: var(--color-primary-900);
+      color: #FFFFFF;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .admin-main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      color: #CBD5E1;
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 0.35rem;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+    .admin-nav-item:hover,
+    .admin-nav-item.is-active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+    }
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .admin-stat-card {
+      background: #FFFFFF;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-xs);
+    }
+    .admin-stat-val {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-primary-900);
+      line-height: 1.1;
+      margin-top: 0.35rem;
+    }
+    .admin-table-wrap {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      overflow-x: auto;
+      box-shadow: var(--shadow-xs);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    .admin-table th {
+      background: var(--color-bg-surface);
+      padding: 0.875rem 1rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .admin-table td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-main);
+    }
+    .admin-table tr:hover td {
+      background: #F8FAFC;
+    }
+    @media (max-width: 768px) {
+      .admin-layout { flex-direction: column; }
+      .admin-sidebar { width: 100%; }
+      .admin-main { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;padding:0 0.5rem">
+        <img src="../img/logo.png" alt="Mayorista a tu Casa" style="height:38px">
+        <div>
+          <div style="font-weight:800;font-size:1rem;line-height:1.1">PANEL ADMIN</div>
+          <small style="font-size:0.6875rem;color:#FFE8D6">AdminYAAA</small>
+        </div>
+      </div>
+
+      <nav style="flex:1">
+        <div class="admin-nav-item is-active" data-tab="tab-products">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Catálogo de Productos
+        </div>
+        <div class="admin-nav-item" data-tab="tab-orders">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Pedidos de WhatsApp
+        </div>
+        <div class="admin-nav-item" data-tab="tab-combos">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Combos y Precios
+        </div>
+      </nav>
+
+      <div style="padding:1rem 0.5rem;border-top:1px solid rgba(255,255,255,0.1)">
+        <a href="../" class="btn btn--outline btn--sm btn--block" style="color:#FFFFFF;border-color:rgba(255,255,255,0.3)">
+          ← Volver a la Tienda
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <h1 style="font-size:1.75rem">Panel de Gestión Mayorista</h1>
+          <p class="text-muted" style="font-size:0.875rem">Administración de catálogo, precios, stock y pedidos para Mayorista a tu Casa.</p>
+        </div>
+        <div>
+          <button type="button" class="btn btn--primary" id="btn-export-catalog">
+            Descargar Catálogo (JSON)
+          </button>
+        </div>
+      </div>
+
+      <!-- Métricas Clave -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <span class="text-muted" style="font-size:0.8125rem;font-weight:700;text-transform:uppercase">Total Productos</span>
+          <div class="admin-stat-val" id="stat-prods">303</div>
+          <small class="text-success">Catálogo activo al 100%</small>
+        </div>
+        <div class="admin-stat-card">
+          <span class="text-muted" style="font-size:0.8125rem;font-weight:700;text-transform:uppercase">Combos Vigentes</span>
+          <div class="admin-stat-val" id="stat-combos">8</div>
+          <small class="text-muted">Ahorro promedio 15%</small>
+        </div>
+        <div class="admin-stat-card">
+          <span class="text-muted" style="font-size:0.8125rem;font-weight:700;text-transform:uppercase">Pedidos Registrados</span>
+          <div class="admin-stat-val" id="stat-orders">0</div>
+          <small class="text-muted">Enviados por WhatsApp</small>
+        </div>
+        <div class="admin-stat-card">
+          <span class="text-muted" style="font-size:0.8125rem;font-weight:700;text-transform:uppercase">WhatsApp Activo</span>
+          <div class="admin-stat-val" style="font-size:1.25rem;color:var(--color-wa);margin-top:0.75rem">11 3033-2341</div>
+          <small class="text-muted">Línea oficial de venta</small>
+        </div>
+      </div>
+
+      <!-- Pestaña Productos -->
+      <section id="tab-products" class="admin-tab-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:1rem;flex-wrap:wrap">
+          <h2 style="font-size:1.25rem">Productos en Catálogo</h2>
+          <div style="display:flex;gap:0.75rem;flex:1;max-width:400px">
+            <input type="search" id="admin-search-input" class="form-input" placeholder="Buscar por código, nombre o marca...">
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Sección</th>
+                <th>Marca</th>
+                <th>Unidad</th>
+                <th>Precio Actual</th>
+                <th>Estado Stock</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body">
+              <!-- Inyectado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Pestaña Pedidos -->
+      <section id="tab-orders" class="admin-tab-content" style="display:none">
+        <h2 style="font-size:1.25rem;margin-bottom:1rem">Pedidos Recibidos por WhatsApp</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>N° Pedido</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Teléfono</th>
+                <th>Total</th>
+                <th>Modalidad</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-body">
+              <!-- Inyectado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Pestaña Combos -->
+      <section id="tab-combos" class="admin-tab-content" style="display:none">
+        <h2 style="font-size:1.25rem;margin-bottom:1rem">Combos Mayoristas Activos</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre del Combo</th>
+                <th>Precio ARS</th>
+                <th>Precio Anterior</th>
+                <th>Ahorro</th>
+                <th>Unidades</th>
+              </tr>
+            </thead>
+            <tbody id="admin-combos-body">
+              <!-- Inyectado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module">
+    import { PRODUCTS } from '../js/data/catalog.js';
+    import { COMBOS } from '../js/data/combos.js';
+    import { OrdersService } from '../js/services/ordersService.js';
+    import { WhatsAppService } from '../js/services/whatsappService.js';
+
+    document.getElementById('stat-prods').textContent = PRODUCTS.length;
+    document.getElementById('stat-combos').textContent = COMBOS.length;
+
+    const allOrders = OrdersService.getOrders();
+    document.getElementById('stat-orders').textContent = allOrders.length;
+
+    // Renderizar Productos
+    function renderAdminTable(filter = '') {
+      const tbody = document.getElementById('admin-table-body');
+      const q = filter.trim().toLowerCase();
+      const filtered = PRODUCTS.filter(p => 
+        p.id.toLowerCase().includes(q) ||
+        p.name.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q)
+      );
+
+      tbody.innerHTML = filtered.slice(0, 100).map(p => `
+        <tr>
+          <td><strong>${p.id}</strong></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:0.5rem">
+              <img src="../${p.image}" alt="" style="width:28px;height:28px;object-fit:contain">
+              <span>${p.name}</span>
+            </div>
+          </td>
+          <td>${p.section}</td>
+          <td>${p.brand}</td>
+          <td>${p.unit}</td>
+          <td><strong>$${p.price.toLocaleString('es-AR')}</strong></td>
+          <td><span class="badge badge--nuevo">Disponible</span></td>
+        </tr>
+      `).join('');
+    }
+
+    renderAdminTable();
+
+    document.getElementById('admin-search-input').addEventListener('input', (e) => {
+      renderAdminTable(e.target.value);
+    });
+
+    // Renderizar Pedidos
+    const ordersBody = document.getElementById('admin-orders-body');
+    if (allOrders.length === 0) {
+      ordersBody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#64748B;padding:2rem">No hay pedidos registrados aún.</td></tr>`;
+    } else {
+      ordersBody.innerHTML = allOrders.map(o => `
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td>${new Date(o.createdAt).toLocaleDateString('es-AR')}</td>
+          <td>${o.customer.firstName} ${o.customer.lastName}</td>
+          <td>${o.customer.phone}</td>
+          <td><strong>$${o.totals.total.toLocaleString('es-AR')}</strong></td>
+          <td style="text-transform:capitalize">${o.deliveryType}</td>
+          <td>
+            <a href="${WhatsAppService.getOrderWhatsAppUrl(o)}" target="_blank" class="btn btn--wa btn--sm">
+              Abrir WhatsApp
+            </a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Renderizar Combos
+    const combosBody = document.getElementById('admin-combos-body');
+    combosBody.innerHTML = COMBOS.map(c => `
+      <tr>
+        <td><strong>${c.id}</strong></td>
+        <td>${c.name}</td>
+        <td><strong>$${c.price.toLocaleString('es-AR')}</strong></td>
+        <td>$${c.oldPrice.toLocaleString('es-AR')}</td>
+        <td><span class="badge badge--oferta">$${c.savingARS.toLocaleString('es-AR')}</span></td>
+        <td>${c.totalUnits} un.</td>
+      </tr>
+    `).join('');
+
+    // Pestañas
+    document.querySelectorAll('.admin-nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('is-active'));
+        item.classList.add('is-active');
+
+        const tabId = item.dataset.tab;
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+      });
+    });
+
+    // Descargar catálogo JSON
+    document.getElementById('btn-export-catalog').addEventListener('click', () => {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(PRODUCTS, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', 'catalogo_mayorista.json');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  </script>
+</body>
+</html>

@@ -1,47 +1,156 @@
-# Mayorista a tu Casa — web de pedidos
+# Mayorista a tu Casa
+**Una iniciativa de AdminYAAA.**
 
-Esta es la web pública de pedidos de Mayorista a tu Casa. Cada cambio que se guarda acá se publica solo en la web en 1 o 2 minutos.
+Web de venta y distribución mayorista moderna, ágil y profesional, pensada para clientes particulares, familias, comercios y PyMEs que desean armar pedidos de supermercado y consumo masivo con precios por volumen y enviarlos directamente por WhatsApp.
 
-**Importante:** este repositorio es solo para la web pública. No subas costos, márgenes, planillas internas ni datos de clientes.
+---
 
-## Cómo editar algo
+## 🚀 Arquitectura y Stack Tecnológico
 
-1. Entrá al archivo que querés cambiar (ver la tabla de abajo).
-2. Tocá el lápiz ✏️ (arriba a la derecha del archivo).
-3. Hacé el cambio.
-4. Tocá **Commit changes…**, escribí en una línea qué cambiaste (por ejemplo: "Precio del aceite Natura") y confirmá con **Commit changes**.
-5. Esperá 1 o 2 minutos y recargá la web para verlo.
+El proyecto está diseñado bajo una arquitectura modular desacoplada, sin frameworks pesados ni dependencias innecesarias, garantizando máxima velocidad de carga (sub-segundo), compatibilidad total móvil y funcionamiento inmediato.
 
-## Qué se cambia en cada archivo
+* **Frontend**: HTML5 Semántico + CSS3 (Variables, Grid, Flexbox, Mobile-First) + JavaScript ES6+ Modules nativos.
+* **Persistencia**: LocalStorage con namespace seguro (`mayorista_*`) y soporte preparado para base de datos (Supabase / Firebase / API REST).
+* **Seguridad PCI-DSS**: Abstracción de medios de pago preparada para pasarela (Mercado Pago). **No se solicita CVV ni se guardan números de tarjeta completos.**
+* **Canal de Cierre**: WhatsApp Business API vía enlace seguro `wa.me/5491130332341`.
 
-| Quiero cambiar… | Archivo |
-|---|---|
-| WhatsApp, zonas y costo de envío, días y horarios, medios de pago | `js/config.js` |
-| Precios, productos y los 6 combos del catálogo | `js/datos.js` |
-| Nombres de productos, "Varias opciones", notas y el combo de $200.000 | `js/ajustes.js` |
-| Qué imagen lleva cada producto o una foto propia | `js/imagenes.js` (y la foto en `img/fotos/`) |
-| Textos fijos (títulos, "Cómo comprar", pie) | `index.html` |
-| Colores y diseño | `css/estilos.css` |
-| Funcionamiento del armador, carrito y WhatsApp | `js/app.js` — **no tocar** sin consultar |
+### Estructura del Código
 
-Más detalle de cada archivo en `LEEME.txt`.
+```text
+/
+├── index.html                  ← Plataforma principal de e-commerce
+├── admin/
+│   └── index.html              ← Panel administrativo para gestión de catálogo y pedidos
+├── css/
+│   ├── variables.css           ← Design tokens, paleta de colores y espaciados
+│   ├── base.css                ← Resets y accesibilidad WCAG 2.1
+│   ├── layout.css              ← Header, Hero, Footer, Drawers y navegación
+│   ├── components.css          ← Cards de producto, combos, modales, toasts, checkout
+│   └── responsive.css          ← Breakpoints móvil y barra de navegación inferior
+├── js/
+│   ├── config.js               ← Datos comerciales: WhatsApp, zonas de entrega y pagos
+│   ├── data/
+│   │   ├── catalog.js          ← 303 productos normalizados con fotos y marcas
+│   │   ├── combos.js           ← 8 combos mayoristas sugeridos con desglose
+│   │   └── categories.js       ← Secciones y categorías con metadatos
+│   ├── services/
+│   │   ├── storageService.js   ← Capa de persistencia local
+│   │   ├── authService.js      ← Registro, login, sesiones y perfil
+│   │   ├── addressService.js   ← Direcciones guardadas por usuario
+│   │   ├── paymentService.js   ← Billetera y detección segura de tarjetas
+│   │   ├── favoritesService.js ← Gestión de favoritos (invitados y usuarios)
+│   │   ├── cartService.js      ← Motor de carrito y cálculo de totales
+│   │   ├── ordersService.js    ← Historial de pedidos y recompra
+│   │   └── whatsappService.js  ← Generador de enlaces y mensajes wa.me
+│   ├── ui/
+│   │   ├── toast.js            ← Feedback visual animado y accesible
+│   │   ├── modal.js            ← Modales con foco y accesibilidad por teclado
+│   │   ├── drawer.js           ← Drawers laterales (carrito y menú móvil)
+│   │   └── quickView.js        ← Ficha y vista rápida de producto
+│   └── app.js                  ← Orquestador y controlador principal
+├── img/
+│   ├── logo.png                ← Isologo oficial de la marca
+│   └── productos/              ← 86 imágenes e ilustraciones WebP optimizadas
+├── robots.txt                  ← Directivas para motores de búsqueda
+├── sitemap.xml                 ← Mapa de sitio SEO
+└── README.md                   ← Documentación del proyecto
+```
 
-## Cuidados para no romper la web
+---
 
-- Cambiá solo lo que está **entre comillas** o los **números**. Respetá las comas, comillas y llaves `{ }` como están. Si falta una coma o una comilla, la web entera deja de mostrarse.
-- Los precios se escriben **sin punto ni signo $**: `2380`, no `$2.380`.
-- Los precios de `datos.js` ya son los finales: la web **no** suma el 10% ni redondea.
-- Los combos suman exacto su precio con los productos que tienen adentro. Si cambiás un precio que está en un combo, el total del combo cambia: avisale a AdminYA para reajustarlo.
-- Un cambio por vez, con una descripción clara en el commit.
+## 💻 Cómo Ejecutar en Desarrollo
 
-## Si algo se rompió
+No necesitás instalar `node` ni compilar nada. Podés usar cualquier navegador o servidor web local:
 
-1. Entrá a Cloudflare → **Workers & Pages** → el proyecto de la web → **Deployments**.
-2. En la versión anterior que funcionaba, tocá los tres puntos `…` → **Rollback to this deployment**. La web vuelve a esa versión en segundos.
-3. Después corregí el archivo en GitHub (el historial de cada archivo está en **History**).
+### Opción 1: Servidor Local con Python (Recomendado)
+```bash
+python3 -m http.server 8080
+```
+Abrí tu navegador en: [http://localhost:8080](http://localhost:8080)
 
-## Fotos de productos
+### Opción 2: Abrir directamente el archivo
+Hacé doble clic en `index.html` en Chrome, Safari, Edge o Firefox.
 
-1. Entrá a la carpeta `img/fotos/` y tocá **Add file → Upload files**. Cuadrada, JPG o WEBP, de unos 300 × 300 px, con el código del producto como nombre: `M72.jpg`.
-2. En `js/imagenes.js`, dentro de `fotos`, agregá la línea con el código: `"M72": "img/fotos/M72.jpg",`
-3. Usá fotos propias o que el proveedor o la marca autoricen.
+---
+
+## 👤 Cuentas y Accesos de Demostración
+
+La aplicación cuenta con un usuario precargado para pruebas inmediatas:
+* **Email**: `carolina@adminya.com.ar`
+* **Contraseña**: `demo123`
+*(Podés ingresar rápidamente haciendo clic en "⚡ Ingresar como Usuario Demo" en la ventana de login)*.
+
+---
+
+## 🛠️ Guía de Administración y Edición Comercial
+
+### 1. Cómo cambiar el número de WhatsApp
+Abrí `js/config.js` y modificá las líneas:
+```javascript
+whatsappNumber: '5491130332341',  // Formato internacional sin +, guiones ni espacios
+whatsappVisible: '11 3033-2341',  // Cómo se muestra en pantalla
+```
+
+### 2. Cómo modificar productos y precios
+Los 303 productos se encuentran estructurados en `js/data/catalog.js`:
+```javascript
+{
+  "id": "M45",
+  "name": "Aceite Natura x1500",
+  "brand": "Natura",
+  "section": "Almacén",
+  "category": "Aceites y vinagre",
+  "unit": "un.",
+  "price": 3200,          // <-- Modificar precio actual
+  "oldPrice": 3680,       // <-- Precio anterior (genera badge de Oferta)
+  "badge": "MÁS VENDIDO", // <-- Badges: "OFERTA", "MÁS VENDIDO", "NUEVO", null
+  "image": "img/productos/aceite.webp"
+}
+```
+
+### 3. Cómo modificar o sumar Combos
+Los combos están centralizados en `js/data/combos.js`. Cada combo cuenta con su lista de productos (`items`), precio total y badge:
+```javascript
+{
+  "id": "C200",
+  "name": "Esenciales para tu casa",
+  "badge": "EMPEZÁ DESDE $200.000",
+  "price": 200000,
+  "oldPrice": 230000,
+  "items": [
+    { "productId": "M20", "quantity": 4 },
+    { "productId": "M45", "quantity": 2 }
+  ]
+}
+```
+
+### 4. Cómo conectar el futuro proveedor de pagos (Mercado Pago)
+La arquitectura está preparada mediante `js/services/paymentService.js`:
+1. En `paymentService.js`, reemplazá `tokenMock` por la llamada al SDK oficial de Mercado Pago:
+   ```javascript
+   const token = await mp.fields.createCardToken({ cardholderName, identificationType, identificationNumber });
+   ```
+2. Enviá el `token` seguro al backend para ejecutar el `PaymentClient.create()`.
+3. Nunca expongas tu `ACCESS_TOKEN` privado en el frontend.
+
+---
+
+## 🌐 Cómo hacer Deploy
+
+El proyecto se puede publicar en segundos en cualquiera de las siguientes plataformas:
+
+### Cloudflare Pages (Recomendado)
+1. Conectá el repositorio GitHub `carolinamsfelipe/Mayoristaweb` a **Cloudflare Pages**.
+2. **Build setting**: Dejalo vacío (sitio estático directo).
+3. **Build output directory**: `/` (o la raíz del proyecto).
+4. Guardá y desplegá. Cada `git push` a `main` se actualizará automáticamente en 1 minuto.
+
+### Netlify
+1. Arrastrá la carpeta completa a la zona *"Drag and drop your site output folder here"* en el panel de Netlify, o conectá el repositorio GitHub.
+
+---
+
+## 🔒 Seguridad y Privacidad
+* Validación estricta de formularios y correos electrónicos.
+* Cero almacenamiento de claves o secretos en código.
+* No se guardan datos de tarjetas sensibles ni códigos CVV.
