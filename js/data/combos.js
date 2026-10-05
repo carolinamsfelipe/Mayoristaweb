@@ -9,7 +9,7 @@ export const COMBOS = [
     "oldPrice": 230000,
     "savingARS": 30000,
     "savingPercent": 15,
-    "image": "img/productos/almacen.webp",
+    "image": "img/productos/fideos.webp",
     "totalUnits": 98,
     "itemCount": 39,
     "items": [

@@ -70,6 +70,132 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Barra de Departamentos Supermercado (Estilo Farmacity / DIA) */
+.supermarket-dept-bar {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  position: sticky;
+  top: var(--header-height);
+  z-index: 90;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.supermarket-dept-bar::-webkit-scrollbar {
+  display: none;
+}
+.supermarket-dept-container {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  white-space: nowrap;
+}
+.dept-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.dept-chip:hover {
+  background: var(--color-border-light);
+  border-color: var(--color-border-dark);
+}
+.dept-chip.is-active {
+  background: var(--color-primary-900);
+  color: #FFFFFF;
+  border-color: var(--color-primary-900);
+}
+.dept-chip--promo {
+  background: #FEF2F2;
+  color: #DC2626;
+  border-color: #FCA5A5;
+}
+.dept-chip--promo:hover {
+  background: #FEE2E2;
+}
+.dept-chip--combo {
+  background: #EFF6FF;
+  color: #2563EB;
+  border-color: #BFDBFE;
+}
+.dept-chip--combo:hover {
+  background: #DBEAFE;
+}
+.dept-chip-icon {
+  font-size: 1rem;
+}
+
+/* Barra de Navegación Inferior Mobile (Estilo DIA / Carrefour) */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #FFFFFF;
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 0.5rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.mobile-nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  color: var(--color-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  flex: 1;
+  transition: color var(--transition-fast);
+}
+.mobile-nav-tab.is-active,
+.mobile-nav-tab:hover {
+  color: var(--color-primary-900);
+}
+.mobile-nav-tab--promo {
+  color: #DC2626;
+}
+.mobile-cart-badge-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.mobile-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #EF4444;
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: var(--radius-full);
+  min-width: 16px;
+  text-align: center;
+}
+
 .header-container {
   display: flex;
   align-items: center;

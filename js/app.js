@@ -75,6 +75,7 @@ function subscribeToServices() {
   CartService.subscribe(() => {
     renderCartDrawer();
     updateCartBadges();
+    updateCardSteppers();
   });
 
   FavoritesService.subscribe(() => {
@@ -295,6 +296,49 @@ function getFilteredProducts() {
   return list;
 }
 
+function getCartItemQty(productId) {
+  const items = CartService.getItems();
+  const item = items.find(it => it.id === `prod_${productId}`);
+  return item ? item.quantity : 0;
+}
+
+function updateCardSteppers() {
+  document.querySelectorAll('[data-product-id]').forEach(card => {
+    const pid = card.dataset.productId;
+    if (!pid) return;
+    const footer = card.querySelector('.product-card-footer');
+    if (!footer) return;
+
+    const inCartQty = getCartItemQty(pid);
+    const existingStepper = footer.querySelector('.product-card-stepper');
+    const existingAddBtn = footer.querySelector('.product-card-add-btn');
+
+    if (inCartQty > 0) {
+      if (existingStepper) {
+        const numEl = existingStepper.querySelector('.stepper-qty-num');
+        if (numEl) numEl.textContent = inCartQty;
+      } else if (existingAddBtn) {
+        existingAddBtn.outerHTML = `
+          <div class="product-card-stepper" data-product-id="${pid}">
+            <button type="button" class="stepper-btn" data-action="stepper-minus" data-product-id="${pid}" aria-label="Disminuir cantidad">−</button>
+            <span class="stepper-qty-num" data-product-id="${pid}">${inCartQty}</span>
+            <button type="button" class="stepper-btn" data-action="stepper-plus" data-product-id="${pid}" aria-label="Aumentar cantidad">+</button>
+          </div>
+        `;
+      }
+    } else {
+      if (existingStepper) {
+        existingStepper.outerHTML = `
+          <button type="button" class="btn btn--primary btn--sm product-card-add-btn" data-action="add-product" data-product-id="${pid}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Agregar
+          </button>
+        `;
+      }
+    }
+  });
+}
+
 function renderCatalog() {
   const grid = document.getElementById('products-grid');
   const countEl = document.getElementById('catalog-count');
@@ -324,6 +368,7 @@ function renderCatalog() {
   grid.innerHTML = products.map(p => {
     const isFav = FavoritesService.isFavorite(user?.id, p.id);
     const unitLabel = p.unit === 'kg' ? 'el kg' : 'c/u';
+    const inCartQty = getCartItemQty(p.id);
 
     return `
       <article class="product-card" data-product-id="${p.id}">
@@ -354,9 +399,18 @@ function renderCatalog() {
           </div>
 
           <div class="product-card-footer">
-            <button type="button" class="btn btn--primary btn--sm product-card-add-btn" data-action="add-product" data-product-id="${p.id}">
-              Agregar
-            </button>
+            ${inCartQty > 0 ? `
+              <div class="product-card-stepper" data-product-id="${p.id}">
+                <button type="button" class="stepper-btn" data-action="stepper-minus" data-product-id="${p.id}" aria-label="Disminuir cantidad">−</button>
+                <span class="stepper-qty-num" data-product-id="${p.id}">${inCartQty}</span>
+                <button type="button" class="stepper-btn" data-action="stepper-plus" data-product-id="${p.id}" aria-label="Aumentar cantidad">+</button>
+              </div>
+            ` : `
+              <button type="button" class="btn btn--primary btn--sm product-card-add-btn" data-action="add-product" data-product-id="${p.id}">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                Agregar
+              </button>
+            `}
             <button type="button" class="product-card-qv-btn" data-action="quick-view" data-product-id="${p.id}" aria-label="Vista rápida de ${p.name}">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
@@ -394,6 +448,8 @@ function renderOffersSection() {
   container.innerHTML = deals.map(p => {
     const isFav = FavoritesService.isFavorite(user?.id, p.id);
     const saving = p.oldPrice - p.price;
+    const inCartQty = getCartItemQty(p.id);
+
     return `
       <article class="product-card" data-product-id="${p.id}">
         <div class="product-card-top">
@@ -421,8 +477,19 @@ function renderOffersSection() {
           </div>
 
           <div class="product-card-footer">
-            <button type="button" class="btn btn--primary btn--sm product-card-add-btn" data-action="add-product" data-product-id="${p.id}">
-              Aprovechar oferta
+            ${inCartQty > 0 ? `
+              <div class="product-card-stepper" data-product-id="${p.id}">
+                <button type="button" class="stepper-btn" data-action="stepper-minus" data-product-id="${p.id}" aria-label="Disminuir cantidad">−</button>
+                <span class="stepper-qty-num" data-product-id="${p.id}">${inCartQty}</span>
+                <button type="button" class="stepper-btn" data-action="stepper-plus" data-product-id="${p.id}" aria-label="Aumentar cantidad">+</button>
+              </div>
+            ` : `
+              <button type="button" class="btn btn--primary btn--sm product-card-add-btn" data-action="add-product" data-product-id="${p.id}">
+                Aprovechar oferta
+              </button>
+            `}
+            <button type="button" class="product-card-qv-btn" data-action="quick-view" data-product-id="${p.id}" aria-label="Vista rápida de ${p.name}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
@@ -1055,6 +1122,26 @@ function bindEventListeners() {
       return;
     }
 
+    // Stepper Plus en card (Estilo DIA / Carrefour)
+    const plusBtn = e.target.closest('[data-action="stepper-plus"]');
+    if (plusBtn) {
+      e.preventDefault();
+      const pid = plusBtn.dataset.productId;
+      const currentQty = getCartItemQty(pid);
+      CartService.updateQuantity(`prod_${pid}`, currentQty + 1);
+      return;
+    }
+
+    // Stepper Minus en card (Estilo DIA / Carrefour)
+    const minusBtn = e.target.closest('[data-action="stepper-minus"]');
+    if (minusBtn) {
+      e.preventDefault();
+      const pid = minusBtn.dataset.productId;
+      const currentQty = getCartItemQty(pid);
+      CartService.updateQuantity(`prod_${pid}`, currentQty - 1);
+      return;
+    }
+
     // Agregar combo directo
     const addComboBtn = e.target.closest('[data-action="add-combo"]');
     if (addComboBtn) {
@@ -1143,17 +1230,36 @@ function bindEventListeners() {
       return;
     }
 
-    // Filtros de sección en pills
-    const pill = e.target.closest('.pill-btn');
+    // Filtros de sección en pills y barra rápida de supermercado
+    const pill = e.target.closest('.pill-btn, .dept-chip[data-section-filter]');
     if (pill) {
-      document.querySelectorAll('.pill-btn').forEach(p => p.classList.remove('is-active'));
-      pill.classList.add('is-active');
-      state.selectedSection = pill.dataset.section;
-      state.selectedCategory = 'todas';
-      renderCatalog();
+      const section = pill.dataset.section || pill.dataset.sectionFilter;
+      if (section) {
+        document.querySelectorAll('.pill-btn, .dept-chip[data-section-filter]').forEach(p => {
+          const s = p.dataset.section || p.dataset.sectionFilter;
+          p.classList.toggle('is-active', s === section);
+        });
+        state.selectedSection = section;
+        state.selectedCategory = 'todas';
+        renderCatalog();
+        if (pill.classList.contains('dept-chip')) {
+          const catSection = document.getElementById('catalogo');
+          if (catSection) catSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
       return;
     }
   });
+
+  // Botón de favoritos en barra inferior móvil
+  const mobFavBtn = document.getElementById('mobile-nav-fav-btn');
+  if (mobFavBtn) {
+    mobFavBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const favHeaderBtn = document.getElementById('header-btn-fav');
+      if (favHeaderBtn) favHeaderBtn.click();
+    });
+  }
 
   // Búsqueda en tiempo real con debounce
   const searchInput = document.getElementById('catalog-search-input');
