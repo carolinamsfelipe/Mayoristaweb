@@ -9,6 +9,7 @@ import { PRODUCTS, PRODUCT_BY_ID } from './data/catalog.js';
 import { COMBOS, COMBO_BY_ID } from './data/combos.js';
 import { SECTIONS } from './data/categories.js';
 
+import { StorageService } from './services/storageService.js';
 import { AuthService } from './services/authService.js';
 import { AddressService } from './services/addressService.js';
 import { PaymentService } from './services/paymentService.js';
@@ -21,6 +22,24 @@ import { Toast } from './ui/toast.js';
 import { Modal } from './ui/modal.js';
 import { Drawer } from './ui/drawer.js';
 import { QuickView } from './ui/quickView.js';
+
+// Sincronización en vivo con inventario y precios del Panel Administrativo (/admin)
+function getLiveProducts() {
+  const stored = StorageService.get('wholesale_products', null);
+  if (stored && Array.isArray(stored) && stored.length > 0) {
+    stored.forEach(p => {
+      PRODUCT_BY_ID.set(p.id, {
+        ...p,
+        inStock: (p.stock !== undefined ? p.stock > 0 : true) && p.status !== 'inactivo'
+      });
+    });
+    return stored.map(p => ({
+      ...p,
+      inStock: (p.stock !== undefined ? p.stock > 0 : true) && p.status !== 'inactivo'
+    }));
+  }
+  return PRODUCTS;
+}
 
 // Estado global de la vista
 const state = {
@@ -48,6 +67,9 @@ const state = {
 document.addEventListener('DOMContentLoaded', () => {
   Modal.init();
   Drawer.init();
+
+  // Sincronizar catálogo inicial desde Storage si existe
+  getLiveProducts();
 
   renderTopbar();
   renderBrandHeader();
@@ -80,6 +102,17 @@ function subscribeToServices() {
 
   FavoritesService.subscribe(() => {
     updateFavoritesUI();
+  });
+
+  // Re-renderizar si el administrador modifica precios o stock en otra pestaña
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'wholesale_products') {
+      getLiveProducts();
+      renderSectionFilterPills();
+      renderCatalog();
+      renderOffersSection();
+      renderTopSellersSection();
+    }
   });
 }
 
@@ -225,7 +258,7 @@ function renderSectionFilterPills() {
   const container = document.getElementById('category-filter-pills');
   if (!container) return;
 
-  const totalAll = PRODUCTS.length;
+  const totalAll = getLiveProducts().length;
   let html = `
     <button type="button" class="pill-btn ${state.selectedSection === 'todos' ? 'is-active' : ''}" data-section="todos">
       Todos (${totalAll})
@@ -244,7 +277,7 @@ function renderSectionFilterPills() {
 }
 
 function getFilteredProducts() {
-  let list = [...PRODUCTS];
+  let list = [...getLiveProducts()];
 
   // Filtro por Sección
   if (state.selectedSection !== 'todos') {
@@ -442,7 +475,7 @@ function renderOffersSection() {
   const container = document.getElementById('offers-grid');
   if (!container) return;
 
-  const deals = PRODUCTS.filter(p => p.badge === 'OFERTA').slice(0, 4);
+  const deals = getLiveProducts().filter(p => p.badge === 'OFERTA').slice(0, 4);
   const user = AuthService.getCurrentUser();
 
   container.innerHTML = deals.map(p => {
@@ -505,7 +538,7 @@ function renderTopSellersSection() {
   const container = document.getElementById('top-sellers-grid');
   if (!container) return;
 
-  const topItems = PRODUCTS.filter(p => p.badge === 'MÁS VENDIDO').slice(0, 4);
+  const topItems = getLiveProducts().filter(p => p.badge === 'MÁS VENDIDO').slice(0, 4);
 
   container.innerHTML = topItems.map((p, idx) => `
     <div class="top-seller-item" style="display:flex;align-items:center;gap:1rem;background:#FFFFFF;border:1px solid var(--color-border);padding:1rem;border-radius:var(--radius-lg)">
